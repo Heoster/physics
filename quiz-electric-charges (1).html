@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JEE Mains Physics Quiz — Electric Charges & Fields</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0a0e27;
+    --bg2: #111640;
+    --bg3: #1a1f4e;
+    --accent: #63b3ed;
+    --accent2: #7c3aed;
+    --accent3: #f093fb;
+    --accent4: #4fd1c5;
+    --accent5: #f6ad55;
+    --gold: #ffd700;
+    --green: #48bb78;
+    --red: #fc8181;
+    --text: #e2e8f0;
+    --dim: #94a3b8;
+    --bright: #ffffff;
+    --panel: rgba(17,22,64,0.92);
+    --border: rgba(99,179,237,0.25);
+    --correct: rgba(72,187,120,0.15);
+    --wrong: rgba(252,129,129,0.15);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background:
+      radial-gradient(ellipse at 20% 50%, rgba(124,58,237,0.08) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 20%, rgba(99,179,237,0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 50% 80%, rgba(79,209,197,0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* ── Header ── */
+  .quiz-header {
+    text-align: center;
+    padding: 30px 0 20px;
+  }
+
+  .quiz-header .badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--accent2), var(--accent3));
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 5px 16px;
+    border-radius: 20px;
+    margin-bottom: 12px;
+  }
+
+  .quiz-header h1 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(22px, 4vw, 34px);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--accent), var(--accent4));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    line-height: 1.3;
+  }
+
+  .quiz-header .subtitle {
+    color: var(--dim);
+    font-size: 14px;
+    margin-top: 6px;
+  }
+
+  .quiz-header .subtitle span {
+    color: var(--accent5);
+    font-weight: 600;
+  }
+
+  /* ── Stats Bar ── */
+  .stats-bar {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 18px 0 24px;
+  }
+
+  .stat-chip {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    backdrop-filter: blur(10px);
+  }
+
+  .stat-chip .icon { font-size: 16px; }
+  .stat-chip .val { color: var(--bright); font-family: 'JetBrains Mono', monospace; }
+
+  /* ── Timer Bar ── */
+  .timer-bar {
+    width: 100%;
+    height: 5px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 3px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .timer-bar .fill {
+    height: 100%;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--accent4), var(--accent));
+    transition: width 1s linear;
+  }
+
+  .timer-bar .fill.warning { background: linear-gradient(90deg, var(--accent5), var(--red)); }
+
+  /* ── Progress ── */
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 8px;
+    background: rgba(255,255,255,0.07);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .progress-track .fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent2), var(--accent));
+    border-radius: 4px;
+    transition: width 0.4s ease;
+  }
+
+  .progress-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--dim);
+    min-width: 60px;
+    text-align: right;
+  }
+
+  /* ── Question Card ── */
+  .q-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px 30px 24px;
+    backdrop-filter: blur(20px);
+    margin-bottom: 20px;
+    animation: fadeInUp 0.4s ease;
+  }
+
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .q-card .q-number {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+
+  .q-number .num {
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 8px;
+  }
+
+  .q-number .topic {
+    font-size: 11px;
+    color: var(--accent4);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .q-card .question {
+    font-size: 16px;
+    line-height: 1.7;
+    color: var(--bright);
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .q-card .question .math {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-weight: 600;
+    background: rgba(99,179,237,0.08);
+    padding: 1px 6px;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+
+  /* ── Options ── */
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 18px;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 14px 18px;
+    background: rgba(255,255,255,0.03);
+    border: 2px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: var(--text);
+  }
+
+  .option:hover:not(.disabled) {
+    background: rgba(99,179,237,0.08);
+    border-color: rgba(99,179,237,0.3);
+    transform: translateX(4px);
+  }
+
+  .option .letter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(255,255,255,0.06);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--dim);
+    flex-shrink: 0;
+    transition: all 0.25s ease;
+    margin-top: 1px;
+  }
+
+  .option:hover:not(.disabled) .letter {
+    background: rgba(99,179,237,0.15);
+    color: var(--accent);
+  }
+
+  .option.selected {
+    border-color: var(--accent);
+    background: rgba(99,179,237,0.1);
+  }
+
+  .option.selected .letter {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .option.correct {
+    border-color: var(--green) !important;
+    background: var(--correct) !important;
+    animation: correctPulse 0.5s ease;
+  }
+
+  .option.correct .letter {
+    background: var(--green) !important;
+    color: #fff !important;
+  }
+
+  .option.wrong {
+    border-color: var(--red) !important;
+    background: var(--wrong) !important;
+    animation: shake 0.4s ease;
+  }
+
+  .option.wrong .letter {
+    background: var(--red) !important;
+    color: #fff !important;
+  }
+
+  .option.disabled { cursor: default; pointer-events: none; }
+
+  @keyframes correctPulse {
+    0%,100% { transform: scale(1); }
+    50% { transform: scale(1.01); }
+  }
+
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    75% { transform: translateX(6px); }
+  }
+
+  /* ── Explanation ── */
+  .explanation {
+    margin-top: 16px;
+    padding: 16px 20px;
+    background: rgba(79,209,197,0.06);
+    border: 1px solid rgba(79,209,197,0.2);
+    border-radius: 14px;
+    display: none;
+    animation: fadeInUp 0.3s ease;
+  }
+
+  .explanation.show { display: block; }
+
+  .explanation .exp-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--accent4);
+    margin-bottom: 8px;
+  }
+
+  .explanation .exp-text {
+    font-size: 13.5px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .explanation .exp-text .math {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 13px;
+  }
+
+  /* ── Nav Buttons ── */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-top: 6px;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    color: #fff;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent2), #6d28d9);
+    box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+  }
+
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 25px rgba(124,58,237,0.4); }
+
+  .btn-secondary {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+
+  .btn-secondary:hover { background: rgba(255,255,255,0.1); }
+
+  .btn-success {
+    background: linear-gradient(135deg, var(--green), #38a169);
+    box-shadow: 0 4px 20px rgba(72,187,120,0.3);
+  }
+
+  .btn:disabled { opacity: 0.4; cursor: not-allowed; transform: none !important; }
+
+  /* ── Question Navigator ── */
+  .q-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    justify-content: center;
+    margin: 18px 0;
+    padding: 14px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+  }
+
+  .q-nav .dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: var(--dim);
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .q-nav .dot:hover { background: rgba(99,179,237,0.1); border-color: var(--accent); }
+  .q-nav .dot.current { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .q-nav .dot.answered { background: rgba(72,187,120,0.15); border-color: var(--green); color: var(--green); }
+  .q-nav .dot.wrong-dot { background: rgba(252,129,129,0.15); border-color: var(--red); color: var(--red); }
+
+  /* ── Results Screen ── */
+  .results-screen {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+    animation: fadeInUp 0.6s ease;
+  }
+
+  .results-screen.show { display: block; }
+
+  .score-circle {
+    width: 180px;
+    height: 180px;
+    margin: 0 auto 24px;
+    position: relative;
+  }
+
+  .score-circle svg { transform: rotate(-90deg); }
+
+  .score-circle .track {
+    fill: none;
+    stroke: rgba(255,255,255,0.06);
+    stroke-width: 10;
+  }
+
+  .score-circle .bar {
+    fill: none;
+    stroke-width: 10;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1.5s ease;
+  }
+
+  .score-circle .score-text {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+  }
+
+  .score-circle .score-num {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 42px;
+    font-weight: 900;
+    color: var(--bright);
+  }
+
+  .score-circle .score-label {
+    font-size: 12px;
+    color: var(--dim);
+    margin-top: 2px;
+  }
+
+  .results-title {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .results-sub {
+    color: var(--dim);
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .result-stats {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 30px;
+  }
+
+  .r-stat {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px 24px;
+    min-width: 120px;
+  }
+
+  .r-stat .r-val {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+  }
+
+  .r-stat .r-label {
+    font-size: 11px;
+    color: var(--dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 4px;
+  }
+
+  .r-stat.correct-s .r-val { color: var(--green); }
+  .r-stat.wrong-s .r-val { color: var(--red); }
+  .r-stat.skip-s .r-val { color: var(--accent5); }
+  .r-stat.time-s .r-val { color: var(--accent); }
+
+  /* ── Review Section ── */
+  .review-section {
+    margin-top: 30px;
+    text-align: left;
+  }
+
+  .review-section h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--accent);
+  }
+
+  .review-item {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 14px;
+  }
+
+  .review-item.is-correct { border-left: 4px solid var(--green); }
+  .review-item.is-wrong { border-left: 4px solid var(--red); }
+  .review-item.is-skip { border-left: 4px solid var(--accent5); }
+
+  .review-item .ri-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .ri-head .ri-q { font-weight: 700; color: var(--bright); font-size: 14px; }
+
+  .ri-head .ri-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 6px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .ri-badge.correct-b { background: rgba(72,187,120,0.15); color: var(--green); }
+  .ri-badge.wrong-b { background: rgba(252,129,129,0.15); color: var(--red); }
+  .ri-badge.skip-b { background: rgba(246,173,85,0.15); color: var(--accent5); }
+
+  .review-item .ri-question { font-size: 13.5px; line-height: 1.6; color: var(--text); margin-bottom: 8px; }
+
+  .review-item .ri-answers {
+    font-size: 12.5px;
+    color: var(--dim);
+    line-height: 1.7;
+  }
+
+  .ri-answers span { font-weight: 600; }
+  .ri-answers .your-ans { color: var(--red); }
+  .ri-answers .correct-ans { color: var(--green); }
+
+  .review-item .explanation { margin-top: 10px; }
+
+  /* ── Start Screen ── */
+  .start-screen {
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .start-screen .hero-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+  }
+
+  .start-screen h2 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: clamp(20px, 3.5vw, 28px);
+    background: linear-gradient(135deg, var(--accent), var(--accent4));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  .start-screen .desc {
+    color: var(--dim);
+    font-size: 14px;
+    line-height: 1.7;
+    max-width: 500px;
+    margin: 0 auto 24px;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    max-width: 500px;
+    margin: 0 auto 28px;
+  }
+
+  .info-card {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+  }
+
+  .info-card .ic-val {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--bright);
+  }
+
+  .info-card .ic-label {
+    font-size: 11px;
+    color: var(--dim);
+    margin-top: 4px;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    text-align: center;
+    padding: 30px 0;
+    color: var(--dim);
+    font-size: 12px;
+  }
+
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .container { padding: 12px; }
+    .q-card { padding: 20px 18px; border-radius: 16px; }
+    .option { padding: 12px 14px; font-size: 13.5px; }
+    .stats-bar { gap: 8px; }
+    .stat-chip { padding: 6px 12px; font-size: 12px; }
+    .btn { padding: 10px 20px; font-size: 13px; }
+    .result-stats { gap: 10px; }
+    .r-stat { padding: 12px 16px; min-width: 100px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Header -->
+  <div class="quiz-header">
+    <div class="badge">JEE Mains • PYQ</div>
+    <h1>Electric Charges & Fields</h1>
+    <div class="subtitle">Class 12 Physics — Chapter 1 · <span>25 MCQs</span></div>
+  </div>
+
+  <!-- Start Screen -->
+  <div id="startScreen" class="start-screen">
+    <div class="hero-icon">⚡</div>
+    <h2>Physics Quiz Challenge</h2>
+    <p class="desc">
+      Test your understanding of <strong>Electric Charges and Fields</strong> with 25 carefully selected
+      JEE Mains Previous Year Questions. Each question comes with a detailed solution.
+    </p>
+    <div class="info-grid">
+      <div class="info-card">
+        <div class="ic-val">25</div>
+        <div class="ic-label">Questions</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-val">45 min</div>
+        <div class="ic-label">Duration</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-val">+4 / −1</div>
+        <div class="ic-label">Marking</div>
+      </div>
+      <div class="info-card">
+        <div class="ic-val">100</div>
+        <div class="ic-label">Max Marks</div>
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="startQuiz()" style="font-size:16px; padding: 14px 48px;">
+      ▶&nbsp; START QUIZ
+    </button>
+  </div>
+
+  <!-- Quiz Screen -->
+  <div id="quizScreen" style="display:none;">
+    <!-- Stats Bar -->
+    <div class="stats-bar">
+      <div class="stat-chip">
+        <span class="icon">⏱</span>
+        <span class="val" id="timerDisplay">45:00</span>
+      </div>
+      <div class="stat-chip">
+        <span class="icon">✅</span>
+        <span class="val" id="correctCount">0</span>
+      </div>
+      <div class="stat-chip">
+        <span class="icon">❌</span>
+        <span class="val" id="wrongCount">0</span>
+      </div>
+      <div class="stat-chip">
+        <span class="icon">📊</span>
+        <span class="val" id="scoreDisplay">0</span>
+        <span style="color:var(--dim);font-size:11px;">/ 100</span>
+      </div>
+    </div>
+
+    <!-- Timer Bar -->
+    <div class="timer-bar">
+      <div class="fill" id="timerFill" style="width:100%;"></div>
+    </div>
+
+    <!-- Progress -->
+    <div class="progress-row">
+      <div class="progress-track">
+        <div class="fill" id="progressFill" style="width:0%;"></div>
+      </div>
+      <div class="progress-text" id="progressText">1 / 25</div>
+    </div>
+
+    <!-- Question Navigator -->
+    <div class="q-nav" id="qNav"></div>
+
+    <!-- Question Card -->
+    <div class="q-card" id="qCard">
+      <div class="q-number">
+        <span class="num" id="qNum">Q1</span>
+        <span class="topic" id="qTopic">Coulomb's Law</span>
+      </div>
+      <div class="question" id="qText"></div>
+      <div class="options" id="optionsBox"></div>
+      <div class="explanation" id="explanationBox">
+        <div class="exp-title">💡 Solution</div>
+        <div class="exp-text" id="expText"></div>
+      </div>
+    </div>
+
+    <!-- Nav Buttons -->
+    <div class="nav-row">
+      <button class="btn btn-secondary" id="prevBtn" onclick="goQuestion(currentQ - 1)">← Prev</button>
+      <button class="btn btn-primary" id="nextBtn" onclick="goQuestion(currentQ + 1)">Next →</button>
+      <button class="btn btn-success" id="submitBtn" onclick="submitQuiz()" style="display:none;">Submit Quiz</button>
+    </div>
+  </div>
+
+  <!-- Results Screen -->
+  <div class="results-screen" id="resultsScreen">
+    <div class="score-circle">
+      <svg width="180" height="180" viewBox="0 0 180 180">
+        <circle class="track" cx="90" cy="90" r="78"/>
+        <circle class="bar" id="scoreBar" cx="90" cy="90" r="78"
+          stroke-dasharray="490" stroke-dashoffset="490"/>
+      </svg>
+      <div class="score-text">
+        <div class="score-num" id="finalScore">0</div>
+        <div class="score-label">out of 100</div>
+      </div>
+    </div>
+    <div class="results-title" id="resultTitle">Quiz Complete!</div>
+    <div class="results-sub" id="resultSub">Here's how you performed</div>
+
+    <div class="result-stats">
+      <div class="r-stat correct-s">
+        <div class="r-val" id="rCorrect">0</div>
+        <div class="r-label">Correct</div>
+      </div>
+      <div class="r-stat wrong-s">
+        <div class="r-val" id="rWrong">0</div>
+        <div class="r-label">Wrong</div>
+      </div>
+      <div class="r-stat skip-s">
+        <div class="r-val" id="rSkip">0</div>
+        <div class="r-label">Skipped</div>
+      </div>
+      <div class="r-stat time-s">
+        <div class="r-val" id="rTime">0:00</div>
+        <div class="r-label">Time Taken</div>
+      </div>
+    </div>
+
+    <button class="btn btn-primary" onclick="toggleReview()" style="margin-bottom: 20px; font-size:15px; padding: 13px 36px;">
+      📋 Review All Answers
+    </button>
+    &nbsp;
+    <button class="btn btn-secondary" onclick="location.reload()" style="font-size:15px; padding: 13px 36px;">
+      🔄 Retake Quiz
+    </button>
+
+    <div class="review-section" id="reviewSection" style="display:none;"></div>
+  </div>
+
+  <div class="footer">
+    JEE Physics Quest · Electric Charges & Fields PYQ Quiz · For educational use
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════════════════
+// 25 JEE MAINS MCQs — ELECTRIC CHARGES & FIELDS (Class 12, Ch 1)
+// ════════════════════════════════════════════════════════════
+
+const questions = [
+  {
+    id: 1,
+    topic: "Coulomb's Law",
+    question: "Two point charges +3 μC and −3 μC are placed at points A and B, separated by a distance of 10 cm. What is the magnitude of the force between them? (1/4πε₀ = 9 × 10⁹ N·m²/C²)",
+    options: ["0.81 N", "81 N", "8.1 N", "810 N"],
+    answer: 2,
+    explanation: "Using Coulomb's Law: <span class='math'>F = kq₁q₂/r²</span><br><span class='math'>F = (9×10⁹)(3×10⁻⁶)(3×10⁻⁶)/(0.1)²</span><br><span class='math'>F = (9×10⁹ × 9×10⁻¹²) / 0.01 = 81×10⁻³ / 0.01 = 8.1 N</span>"
+  },
+  {
+    id: 2,
+    topic: "Electric Field",
+    question: "The electric field at a point distant r from a point charge q is E. If the distance is doubled, the new electric field will be:",
+    options: ["E/2", "2E", "4E", "E/4"],
+    answer: 3,
+    explanation: "Electric field due to a point charge: <span class='math'>E = kq/r²</span>. When distance is doubled (r → 2r): <span class='math'>E' = kq/(2r)² = kq/4r² = E/4</span>. The electric field follows an inverse square law."
+  },
+  {
+    id: 3,
+    topic: "Gauss's Law",
+    question: "A charge Q is enclosed by a Gaussian surface. If the radius of the spherical Gaussian surface is doubled, the electric flux through the surface will be:",
+    options: ["Becomes double", "Remain same", "Becomes half", "Becomes one-fourth"],
+    answer: 1,
+    explanation: "By Gauss's Law: <span class='math'>Φ = Q_enclosed / ε₀</span>. The flux depends only on the enclosed charge, not on the size or shape of the Gaussian surface. Doubling the radius does not change the enclosed charge, so flux remains the same."
+  },
+  {
+    id: 4,
+    topic: "Electric Dipole",
+    question: "An electric dipole is placed in a uniform electric field. The net force and net torque on the dipole are:",
+    options: [
+      "Both force and torque are zero",
+      "Force is non-zero, torque is zero",
+      "Force is zero, torque may be non-zero",
+      "Both force and torque are non-zero"
+    ],
+    answer: 2,
+    explanation: "In a uniform electric field, forces on +q and −q are equal and opposite → <span class='math'>F_net = 0</span>. However, since these forces act at different points, they create a couple → <span class='math'>τ = p × E = pE sinθ</span>, which may be non-zero (unless θ = 0 or π)."
+  },
+  {
+    id: 5,
+    topic: "Electric Field Lines",
+    question: "Which of the following is NOT a property of electric field lines?",
+    options: [
+      "They originate from positive charge and terminate at negative charge",
+      "They do not form closed loops",
+      "Two field lines can intersect at a point",
+      "The tangent at any point gives the direction of electric field"
+    ],
+    answer: 2,
+    explanation: "Two electric field lines <strong>cannot intersect</strong>. If they did, there would be two directions of the electric field at the point of intersection, which is physically impossible. All other options are correct properties of electric field lines."
+  },
+  {
+    id: 6,
+    topic: "Coulomb's Law",
+    question: "Two identical charges repel each other with a force of 16 N. If each charge is halved and the distance between them is also halved, the new force will be:",
+    options: ["4 N", "8 N", "32 N", "16 N"],
+    answer: 3,
+    explanation: "Initial: <span class='math'>F = kq²/r² = 16 N</span>. New: <span class='math'>F' = k(q/2)²/(r/2)² = k(q²/4)/(r²/4) = kq²/r² = F = 16 N</span>. Halving both charge and distance leaves the force unchanged."
+  },
+  {
+    id: 7,
+    topic: "Electric Flux",
+    question: "The electric flux through a surface is:",
+    options: [
+      "Vector quantity",
+      "Scalar quantity",
+      "Neither scalar nor vector",
+      "Depends on the medium"
+    ],
+    answer: 1,
+    explanation: "Electric flux <span class='math'>Φ = E⃗ · A⃗ = EA cosθ</span> is the dot product of two vectors, which is a <strong>scalar quantity</strong>. Its SI unit is N·m²/C or V·m."
+  },
+  {
+    id: 8,
+    topic: "Electric Field — Line of Charge",
+    question: "The electric field due to an infinitely long straight uniformly charged wire at distance r is proportional to:",
+    options: ["1/r", "1/r²", "1/r³", "r"],
+    answer: 0,
+    explanation: "For an infinitely long straight wire with linear charge density λ: <span class='math'>E = λ/(2πε₀r)</span>. The electric field is proportional to <span class='math'>1/r</span> (not 1/r² like a point charge). This is derived using Gauss's Law with a cylindrical Gaussian surface."
+  },
+  {
+    id: 9,
+    topic: "Gauss's Law",
+    question: "A point charge +Q is placed at the centre of a cube. The electric flux through one face of the cube is:",
+    options: ["Q/6ε₀", "Q/ε₀", "Q/2ε₀", "Q/12ε₀"],
+    answer: 0,
+    explanation: "Total flux through the cube: <span class='math'>Φ_total = Q/ε₀</span> (by Gauss's Law). A cube has 6 identical faces. By symmetry, flux through each face: <span class='math'>Φ_face = Φ_total/6 = Q/(6ε₀)</span>."
+  },
+  {
+    id: 10,
+    topic: "Electric Dipole",
+    question: "The electric field at a point on the axial line of a dipole at distance r (r >> a) from its centre is proportional to:",
+    options: ["1/r²", "1/r³", "1/r", "1/r⁴"],
+    answer: 1,
+    explanation: "On the axial line of a dipole: <span class='math'>E_axial = 2kp/r³</span> (where p = 2qa is the dipole moment). So E ∝ 1/r³. Note: For a point charge E ∝ 1/r², but for a dipole the field falls off faster as 1/r³."
+  },
+  {
+    id: 11,
+    topic: "Charge Quantization",
+    question: "A body has a charge of −80 μC. The number of excess electrons on the body is:",
+    options: ["5 × 10¹⁵", "8 × 10¹⁴", "2 × 10¹⁵", "5 × 10¹⁴"],
+    answer: 3,
+    explanation: "Charge is quantized: <span class='math'>Q = ne</span>. So <span class='math'>n = |Q|/e = 80×10⁻⁶ / 1.6×10⁻¹⁹ = 5 × 10¹⁴</span> electrons. The negative sign indicates excess electrons."
+  },
+  {
+    id: 12,
+    topic: "Electric Field — Sheet",
+    question: "The electric field due to an infinite uniformly charged non-conducting sheet is:",
+    options: [
+      "Inversely proportional to distance",
+      "Independent of distance from the sheet",
+      "Inversely proportional to square of distance",
+      "Directly proportional to distance"
+    ],
+    answer: 1,
+    explanation: "For an infinite sheet with surface charge density σ: <span class='math'>E = σ/(2ε₀)</span>. This is independent of the distance from the sheet. This is a unique result that differs from both point charges (1/r²) and infinite line charges (1/r)."
+  },
+  {
+    id: 13,
+    topic: "Coulomb's Law — Medium",
+    question: "Two charges placed in vacuum experience a force F. When placed in a medium of dielectric constant K = 4 at the same separation, the force becomes:",
+    options: ["F/4", "4F", "F/2", "F/16"],
+    answer: 0,
+    explanation: "In a medium of dielectric constant K: <span class='math'>F_medium = F_vacuum / K = F/4</span>. The dielectric constant (relative permittivity) reduces the force between charges. This is because <span class='math'>ε_medium = Kε₀</span>."
+  },
+  {
+    id: 14,
+    topic: "Electric Dipole",
+    question: "The maximum torque on an electric dipole of moment p placed in an electric field E is:",
+    options: ["pE/2", "2pE", "pE", "p²E"],
+    answer: 2,
+    explanation: "Torque on a dipole: <span class='math'>τ = pE sinθ</span>. Maximum torque occurs when θ = 90° (sin90° = 1): <span class='math'>τ_max = pE</span>. This is when the dipole is perpendicular to the field."
+  },
+  {
+    id: 15,
+    topic: "Gauss's Law",
+    question: "Two charges +3q and −q are placed inside a Gaussian surface S. The electric flux through S is:",
+    options: ["3q/ε₀", "q/ε₀", "Zero", "2q/ε₀"],
+    answer: 3,
+    explanation: "By Gauss's Law: <span class='math'>Φ = Q_enclosed/ε₀</span>. Net enclosed charge: <span class='math'>Q = +3q + (−q) = +2q</span>. Therefore: <span class='math'>Φ = 2q/ε₀</span>. Only charges inside the surface contribute to the flux."
+  },
+  {
+    id: 16,
+    topic: "Electric Field — Superposition",
+    question: "Three equal charges +q are placed at the three vertices of an equilateral triangle of side a. The electric field at the centre of the triangle is:",
+    options: ["Zero", "3kq/a²", "√3 kq/a²", "kq/a²"],
+    answer: 0,
+    explanation: "At the centre of an equilateral triangle, all three vertices are equidistant. The three electric field vectors due to identical charges +q have equal magnitudes and are separated by 120°. By symmetry, their vector sum is zero: <span class='math'>E_net = 0</span>."
+  },
+  {
+    id: 17,
+    topic: "Conservation of Charge",
+    question: "When a glass rod is rubbed with silk, the glass rod acquires positive charge. This is because:",
+    options: [
+      "Protons transfer from silk to glass",
+      "Electrons transfer from glass to silk",
+      "Electrons transfer from silk to glass",
+      "Protons transfer from glass to silk"
+    ],
+    answer: 1,
+    explanation: "During triboelectric charging, it is always <strong>electrons</strong> that transfer (not protons, which are bound in nuclei). The glass rod loses electrons to silk → glass becomes positive, silk becomes negative. Total charge is conserved."
+  },
+  {
+    id: 18,
+    topic: "Electric Field",
+    question: "The dimensional formula of electric field is:",
+    options: [
+      "[MLT⁻²A⁻¹]",
+      "[ML²T⁻³A⁻¹]",
+      "[MLT⁻³A⁻²]",
+      "[MLT⁻³A⁻¹]"
+    ],
+    answer: 3,
+    explanation: "Electric field <span class='math'>E = F/q</span>. Dimensions: <span class='math'>[E] = [F]/[q] = [MLT⁻²]/[AT] = [MLT⁻³A⁻¹]</span>. Here [F] = MLT⁻² and [q] = AT (current × time)."
+  },
+  {
+    id: 19,
+    topic: "Electric Dipole",
+    question: "The ratio of electric field at a point on the axial line to the field at a point on the equatorial line at the same distance from the centre of a short dipole is:",
+    options: ["1 : 2", "1 : 1", "2 : 1", "4 : 1"],
+    answer: 2,
+    explanation: "For a short dipole: <span class='math'>E_axial = 2kp/r³</span> and <span class='math'>E_equatorial = kp/r³</span>. Therefore: <span class='math'>E_axial / E_equatorial = 2/1 = 2 : 1</span>. The axial field is twice the equatorial field at the same distance."
+  },
+  {
+    id: 20,
+    topic: "Gauss's Law",
+    question: "A uniformly charged thin spherical shell of radius R and total charge Q. The electric field at a point inside the shell (r < R) is:",
+    options: ["Q/(4πε₀r²)", "Zero", "Q/(4πε₀R²)", "Qr/(4πε₀R³)"],
+    answer: 1,
+    explanation: "For a point inside a uniformly charged spherical shell (r < R), draw a Gaussian sphere of radius r. No charge is enclosed: <span class='math'>Q_enc = 0</span>. By Gauss's Law: <span class='math'>E × 4πr² = 0</span> → <span class='math'>E = 0</span>. This is a classic result for conducting/thin shells."
+  },
+  {
+    id: 21,
+    topic: "Coulomb's Law",
+    question: "Five equal charges +q are placed at five vertices of a regular hexagon of side a. The electric field at the centre of the hexagon is: (k = 1/4πε₀)",
+    options: ["kq/a²", "5kq/a²", "Zero", "6kq/a²"],
+    answer: 0,
+    explanation: "If all 6 vertices had charge +q, field at centre = 0 (by symmetry). The 6th vertex has no charge, so the field at centre = field that would have been produced by the missing −q charge at the 6th vertex = <span class='math'>kq/a²</span> directed towards the empty vertex."
+  },
+  {
+    id: 22,
+    topic: "Electric Flux",
+    question: "A charge Q is placed at a distance r from the centre of a spherical surface of radius R (where r > R). The electric flux through the sphere is:",
+    options: ["Q/ε₀", "Q/(4πε₀r²)", "Zero", "Depends on R"],
+    answer: 2,
+    explanation: "Since r > R, the charge Q lies <strong>outside</strong> the Gaussian sphere. By Gauss's Law: <span class='math'>Φ = Q_enclosed/ε₀ = 0/ε₀ = 0</span>. Only charges inside the surface contribute to net flux. Field lines entering the surface also exit it."
+  },
+  {
+    id: 23,
+    topic: "Electric Field — Ring",
+    question: "The electric field at the centre of a uniformly charged ring of radius R and total charge Q is:",
+    options: ["kQ/R²", "2kQ/R²", "kQ/2R²", "Zero"],
+    answer: 3,
+    explanation: "By symmetry, each infinitesimal charge element dq on the ring produces a field dE at the centre directed radially. For every element, the diametrically opposite element produces an equal and opposite field. All contributions cancel → <span class='math'>E_centre = 0</span>."
+  },
+  {
+    id: 24,
+    topic: "Gauss's Law — Application",
+    question: "Two large parallel conducting plates have surface charge densities +σ and −σ. The electric field in the region between the plates is:",
+    options: ["σ/ε₀", "σ/2ε₀", "2σ/ε₀", "Zero"],
+    answer: 0,
+    explanation: "Field due to +σ plate: <span class='math'>E₁ = σ/(2ε₀)</span> (directed away from +σ plate). Field due to −σ plate: <span class='math'>E₂ = σ/(2ε₀)</span> (directed towards −σ plate). Between plates, both fields are in the same direction: <span class='math'>E = E₁ + E₂ = σ/ε₀</span>."
+  },
+  {
+    id: 25,
+    topic: "Electric Dipole — Potential Energy",
+    question: "A dipole of moment p is rotated from angle θ₁ to θ₂ in a uniform electric field E. The work done is:",
+    options: [
+      "pE(cosθ₂ − cosθ₁)",
+      "pE(cosθ₁ − cosθ₂)",
+      "pE(sinθ₁ − sinθ₂)",
+      "pE(cosθ₁ + cosθ₂)"
+    ],
+    answer: 1,
+    explanation: "Potential energy of dipole: <span class='math'>U = −pE cosθ</span>. Work done = change in PE: <span class='math'>W = U₂ − U₁ = (−pE cosθ₂) − (−pE cosθ₁) = pE(cosθ₁ − cosθ₂)</span>."
+  }
+];
+
+// ════════════════════════════════════════════════════════════
+// Quiz Engine
+// ════════════════════════════════════════════════════════════
+
+let currentQ = 0;
+let userAnswers = new Array(25).fill(-1);
+let revealed = new Array(25).fill(false);
+let timerInterval;
+let timeLeft = 45 * 60; // 45 minutes
+let totalTime = 45 * 60;
+let quizStarted = false;
+let quizFinished = false;
+
+function startQuiz() {
+  document.getElementById('startScreen').style.display = 'none';
+  document.getElementById('quizScreen').style.display = 'block';
+  quizStarted = true;
+  buildQNav();
+  renderQuestion();
+  startTimer();
+}
+
+function startTimer() {
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    if (timeLeft <= 0) {
+      clearInterval(timerInterval);
+      submitQuiz();
+      return;
+    }
+    updateTimerDisplay();
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(timeLeft / 60);
+  const s = timeLeft % 60;
+  document.getElementById('timerDisplay').textContent =
+    `${m.toString().padStart(2,'0')}:${s.toString().padStart(2,'0')}`;
+  const pct = (timeLeft / totalTime) * 100;
+  const fill = document.getElementById('timerFill');
+  fill.style.width = pct + '%';
+  if (pct < 20) fill.classList.add('warning');
+}
+
+function buildQNav() {
+  const nav = document.getElementById('qNav');
+  nav.innerHTML = '';
+  for (let i = 0; i < 25; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'dot';
+    dot.textContent = i + 1;
+    dot.onclick = () => goQuestion(i);
+    nav.appendChild(dot);
+  }
+  updateQNav();
+}
+
+function updateQNav() {
+  const dots = document.querySelectorAll('.q-nav .dot');
+  dots.forEach((d, i) => {
+    d.className = 'dot';
+    if (i === currentQ) d.classList.add('current');
+    else if (revealed[i] && userAnswers[i] !== questions[i].answer) d.classList.add('wrong-dot');
+    else if (revealed[i]) d.classList.add('answered');
+  });
+}
+
+function renderQuestion() {
+  const q = questions[currentQ];
+  document.getElementById('qNum').textContent = `Q${currentQ + 1}`;
+  document.getElementById('qTopic').textContent = q.topic;
+  document.getElementById('qText').innerHTML = q.question;
+
+  const optBox = document.getElementById('optionsBox');
+  optBox.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+
+  q.options.forEach((opt, i) => {
+    const div = document.createElement('div');
+    div.className = 'option';
+    if (revealed[currentQ]) div.classList.add('disabled');
+
+    div.innerHTML = `<span class="letter">${letters[i]}</span><span>${opt}</span>`;
+
+    if (revealed[currentQ]) {
+      if (i === q.answer) div.classList.add('correct');
+      else if (i === userAnswers[currentQ] && i !== q.answer) div.classList.add('wrong');
+    } else {
+      div.onclick = () => selectOption(i);
+    }
+
+    optBox.appendChild(div);
+  });
+
+  // Explanation
+  const expBox = document.getElementById('explanationBox');
+  if (revealed[currentQ]) {
+    document.getElementById('expText').innerHTML = q.explanation;
+    expBox.classList.add('show');
+  } else {
+    expBox.classList.remove('show');
+  }
+
+  // Progress
+  document.getElementById('progressFill').style.width = ((currentQ + 1) / 25 * 100) + '%';
+  document.getElementById('progressText').textContent = `${currentQ + 1} / 25`;
+
+  // Nav buttons
+  document.getElementById('prevBtn').disabled = currentQ === 0;
+
+  if (currentQ === 24) {
+    document.getElementById('nextBtn').style.display = 'none';
+    document.getElementById('submitBtn').style.display = 'inline-flex';
+  } else {
+    document.getElementById('nextBtn').style.display = 'inline-flex';
+    document.getElementById('submitBtn').style.display = 'none';
+  }
+
+  updateQNav();
+  updateScoreDisplay();
+}
+
+function selectOption(idx) {
+  if (revealed[currentQ]) return;
+
+  userAnswers[currentQ] = idx;
+  revealed[currentQ] = true;
+
+  const q = questions[currentQ];
+  const isCorrect = idx === q.answer;
+
+  // Play sound
+  if (isCorrect) playTone(880, 0.15, 'sine', 0.08);
+  else playTone(300, 0.2, 'sawtooth', 0.06);
+
+  renderQuestion();
+
+  // Auto-advance after delay
+  if (currentQ < 24) {
+    setTimeout(() => {
+      if (currentQ < 24 && !quizFinished) goQuestion(currentQ + 1);
+    }, 1500);
+  }
+}
+
+function goQuestion(idx) {
+  if (idx < 0 || idx >= 25) return;
+  currentQ = idx;
+  renderQuestion();
+}
+
+function updateScoreDisplay() {
+  let correct = 0, wrong = 0, score = 0;
+  for (let i = 0; i < 25; i++) {
+    if (!revealed[i]) continue;
+    if (userAnswers[i] === questions[i].answer) {
+      correct++;
+      score += 4;
+    } else if (userAnswers[i] !== -1) {
+      wrong++;
+      score -= 1;
+    }
+  }
+  document.getElementById('correctCount').textContent = correct;
+  document.getElementById('wrongCount').textContent = wrong;
+  document.getElementById('scoreDisplay').textContent = Math.max(0, score);
+}
+
+function submitQuiz() {
+  if (quizFinished) return;
+  quizFinished = true;
+  clearInterval(timerInterval);
+
+  let correct = 0, wrong = 0, skip = 0, score = 0;
+  for (let i = 0; i < 25; i++) {
+    if (userAnswers[i] === -1 || !revealed[i]) {
+      skip++;
+    } else if (userAnswers[i] === questions[i].answer) {
+      correct++;
+      score += 4;
+    } else {
+      wrong++;
+      score -= 1;
+    }
+  }
+  score = Math.max(0, score);
+
+  document.getElementById('quizScreen').style.display = 'none';
+  const rs = document.getElementById('resultsScreen');
+  rs.classList.add('show');
+
+  // Score circle
+  const pct = score / 100;
+  const circumference = 2 * Math.PI * 78; // ~490
+  const offset = circumference * (1 - pct);
+  const bar = document.getElementById('scoreBar');
+  let color = '#fc8181';
+  if (pct >= 0.7) color = '#48bb78';
+  else if (pct >= 0.4) color = '#f6ad55';
+  bar.setAttribute('stroke', color);
+  setTimeout(() => bar.style.strokeDashoffset = offset, 100);
+
+  document.getElementById('finalScore').textContent = score;
+  document.getElementById('rCorrect').textContent = correct;
+  document.getElementById('rWrong').textContent = wrong;
+  document.getElementById('rSkip').textContent = skip;
+
+  const elapsed = totalTime - timeLeft;
+  const em = Math.floor(elapsed / 60);
+  const es = elapsed % 60;
+  document.getElementById('rTime').textContent = `${em}:${es.toString().padStart(2,'0')}`;
+
+  // Title
+  if (pct >= 0.85) {
+    document.getElementById('resultTitle').textContent = '🏆 Outstanding!';
+    document.getElementById('resultSub').textContent = 'You have mastered Electric Charges & Fields!';
+  } else if (pct >= 0.7) {
+    document.getElementById('resultTitle').textContent = '🌟 Great Job!';
+    document.getElementById('resultSub').textContent = 'Strong understanding — keep polishing!';
+  } else if (pct >= 0.4) {
+    document.getElementById('resultTitle').textContent = '📚 Keep Practicing';
+    document.getElementById('resultSub').textContent = 'Review the concepts and try again.';
+  } else {
+    document.getElementById('resultTitle').textContent = '💪 Don\'t Give Up';
+    document.getElementById('resultSub').textContent = 'Revise the chapter thoroughly and retry.';
+  }
+
+  // Build review
+  buildReview();
+}
+
+function buildReview() {
+  const sec = document.getElementById('reviewSection');
+  sec.innerHTML = '<h3>📋 Detailed Solutions</h3>';
+  const letters = ['A','B','C','D'];
+
+  questions.forEach((q, i) => {
+    const userAns = userAnswers[i];
+    const isCorrect = revealed[i] && userAns === q.answer;
+    const isWrong = revealed[i] && userAns !== -1 && userAns !== q.answer;
+    const isSkip = !revealed[i] || userAns === -1;
+
+    const cls = isCorrect ? 'is-correct' : isWrong ? 'is-wrong' : 'is-skip';
+    const badgeCls = isCorrect ? 'correct-b' : isWrong ? 'wrong-b' : 'skip-b';
+    const badgeText = isCorrect ? '✓ Correct' : isWrong ? '✗ Wrong' : '⊘ Skipped';
+
+    let ansHTML = '';
+    if (!isSkip) {
+      ansHTML = `<span class="your-ans">Your answer: (${letters[userAns]}) ${q.options[userAns]}</span><br>`;
+    }
+    ansHTML += `<span class="correct-ans">Correct answer: (${letters[q.answer]}) ${q.options[q.answer]}</span>`;
+
+    sec.innerHTML += `
+      <div class="review-item ${cls}">
+        <div class="ri-head">
+          <span class="ri-q">Q${i+1}. ${q.topic}</span>
+          <span class="ri-badge ${badgeCls}">${badgeText}</span>
+        </div>
+        <div class="ri-question">${q.question}</div>
+        <div class="ri-answers">${ansHTML}</div>
+        <div class="explanation show">
+          <div class="exp-title">💡 Solution</div>
+          <div class="exp-text">${q.explanation}</div>
+        </div>
+      </div>`;
+  });
+}
+
+function toggleReview() {
+  const sec = document.getElementById('reviewSection');
+  sec.style.display = sec.style.display === 'none' ? 'block' : 'none';
+  if (sec.style.display === 'block') {
+    sec.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+// Simple audio
+const ACtx = window.AudioContext || window.webkitAudioContext;
+let actx;
+function playTone(f,d,t='sine',v=0.1){
+  if(!actx) actx=new ACtx();
+  const o=actx.createOscillator(),g=actx.createGain();
+  o.type=t;o.frequency.value=f;
+  g.gain.setValueAtTime(v,actx.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,actx.currentTime+d);
+  o.connect(g);g.connect(actx.destination);o.start();o.stop(actx.currentTime+d);
+}
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1ce24d78d444765',t:'MTc4NDM0MjY1OQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
